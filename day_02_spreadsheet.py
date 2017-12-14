@@ -3,6 +3,9 @@ advent of code day 02
 http://adventofcode.com/2017/day/2
 '''
 
+import pandas as pd
+from io import StringIO
+
 INPUT = '''
 5806    6444    1281    38      267     1835    223     4912    5995    230     4395    2986    6048    4719    216     1201
 74      127     226     84      174     280     94      159     198     305     124     106     205     99      177     294
@@ -22,23 +25,28 @@ INPUT = '''
 128     2088    3422    111     3312    740     3024    1946    920     131     112     477     3386    2392    1108    2741
 '''
 
-import pandas as pd
-from io import StringIO
 
-df = pd.read_fwf(StringIO(INPUT), skiprows=1, header=None)
+def find_row_range(puzzle_input: str) -> int:
+    df = pd.read_fwf(StringIO(puzzle_input), skiprows=1, header=None)
+    result = (df.max(axis=1) - df.min(axis=1)).sum()
 
-result = (df.max(axis=1) - df.min(axis=1)).sum()
-
-print(result)
+    return result
 
 # Part 2
 
-total = 0
 
-for j in range(16):
-    for i in range(16):
-        total += ((df.iloc[j, [_ for _ in range(16) if _ != i]] / df.iloc[j, i])
-                  .where(df.iloc[j, [_ for _ in range(16) if _ != i]] % df.iloc[j, i] == 0, 0).sum())   
+def find_row_divisors(puzzle_input: str) -> int:
+    df = pd.read_fwf(StringIO(puzzle_input), skiprows=1, header=None)
 
-print(total)
+    total: float = 0
 
+    for j in range(16):
+        for i in range(16):
+            total += ((df.iloc[j, [d for d in range(16) if d != i]] / df.iloc[j, i])
+                     .where(df.iloc[j, [d for d in range(16) if d != i]] % df.iloc[j, i] == 0, 0).sum())
+    
+    return int(total)
+
+if __name__ == '__main__':
+    print(find_row_range(INPUT))
+    print(find_row_divisors(INPUT))
