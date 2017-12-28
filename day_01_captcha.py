@@ -7,6 +7,9 @@ INPUT = '''738576468625144447399791512378297253634373265751783467175946279546121
 
 
 def sum_adjacent_digits(puzzle_input: str) -> int:
+    '''
+    gets the total of adjacent digits in a string
+    '''
     total = 0
 
     for i in range(len(puzzle_input) - 1):
@@ -26,6 +29,9 @@ assert sum_adjacent_digits('91212129') == 9
 
 
 def sum_adjacent_digits_halfway(puzzle_input: str) -> int:
+    '''
+    gets the total of adjacent digits in a string
+    '''
     total = 0
     halfway = len(puzzle_input) // 2
 
